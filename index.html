@@ -236,18 +236,31 @@
   const resultText = document.getElementById("resultText");
   const statusEl = document.getElementById("status");
 
-  function init() {
-    participants.forEach(name=>{
-      const li=document.createElement("li");
-      li.textContent=name;
-      namesListEl.appendChild(li);
+ function init() {
+  // создаём копию массива
+  const shuffled = [...participants];
 
-      const opt=document.createElement("option");
-      opt.value=name;
-      opt.textContent=name;
-      playerSelect.appendChild(opt);
-    });
+  // перемешиваем Фишером–Йетсом
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
   }
+
+  // заполняем список слева
+  shuffled.forEach(name => {
+    const li = document.createElement("li");
+    li.textContent = name;
+    namesListEl.appendChild(li);
+  });
+
+  // заполняем выпадающий список
+  shuffled.forEach(name => {
+    const opt = document.createElement("option");
+    opt.value = name;
+    opt.textContent = name;
+    playerSelect.appendChild(opt);
+  });
+}
 
   playerSelect.addEventListener("change",()=>{
     const name = playerSelect.value;
@@ -318,3 +331,4 @@
 
 </body>
 </html>
+
